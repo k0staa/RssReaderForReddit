@@ -17,6 +17,7 @@ public class HandleXML {
     private String description = "description";
     private String urlString = null;
     private XmlPullParserFactory xmlFactoryObject;
+    private Thread thread;
     public volatile boolean parsingComplete = true;
 
     public HandleXML(String url) {
@@ -71,7 +72,7 @@ public class HandleXML {
     }
 
     public void fetchXML() {
-        Thread thread = new Thread(new Runnable() {
+        thread = new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -95,8 +96,10 @@ public class HandleXML {
                     myparser.setInput(stream, null);
 
                     parseXMLAndStoreIt(myparser);
+                    parsingComplete = false;
                     stream.close();
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
