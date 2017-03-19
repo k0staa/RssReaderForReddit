@@ -3,48 +3,79 @@ package pl.codeaddict.rssreaderforreddit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Spinner;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import pl.codeaddict.rssreaderforreddit.listeners.SpinnerListener;
+import pl.codeaddict.rssreaderforreddit.models.UrlAdapterItem;
 import pl.codeaddict.rssreaderforreddit.xml.HandleXML;
 
 public class MainActivity extends AppCompatActivity {
-    EditText title, link, description;
-    Button b1, b2;
-    private String finalUrl = "http://tutorialspoint.com/android/sampleXML.xml";
-    private HandleXML obj;
+    private Button b1;
+    private String choosenUrl = "http://tutorialspoint.com/android/sampleXML.xml";
+    private HandleXML handleXML;
+    private List<UrlAdapterItem> channelSpinner;
+    private Spinner spinner;
+
+    public MainActivity() {
+        channelSpinner = new ArrayList<>();
+        channelSpinner.add(new UrlAdapterItem("All","https://www.reddit.com/r/all/.xml" ));
+        channelSpinner.add(new UrlAdapterItem("Polska", "https://www.reddit.com/r/polska/.xml" ));
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        RssReaderForRedditApplication.setContext(this);
+        spinner = (Spinner) findViewById(R.id.spinner);
 
-        title = (EditText) findViewById(R.id.editText);
-        link = (EditText) findViewById(R.id.editText2);
-        description = (EditText) findViewById(R.id.editText3);
+        ArrayAdapter<UrlAdapterItem> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, channelSpinner);
+
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new SpinnerListener(this));
 
         b1 = (Button) findViewById(R.id.button);
-        b2 = (Button) findViewById(R.id.button2);
+
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                obj = new HandleXML(finalUrl);
-                obj.fetchXML();
+                handleXML = new HandleXML(choosenUrl);
+                handleXML.fetchXML();
 
-                while (obj.parsingComplete) ;
-                title.setText(obj.getTitle());
-                link.setText(obj.getLink());
-                description.setText(obj.getDescription());
-            }
-        });
-
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                while (handleXML.parsingComplete) ;
+                Log.i("Posts", "values = <<" + handleXML.getRedditPostList() + ">>");
                 Intent in = new Intent(MainActivity.this, SecondActivity.class);
                 startActivity(in);
             }
         });
+    }
+
+    public List<UrlAdapterItem> getChannelSpinner() {
+        return channelSpinner;
+    }
+
+    public String getChoosenUrl() {
+        return choosenUrl;
+    }
+
+    public void setChoosenUrl(String choosenUrl) {
+        this.choosenUrl = choosenUrl;
+    }
+
+    public Spinner getSpinner() {
+        return spinner;
+    }
+
+    public HandleXML getHandleXML() {
+        return handleXML;
     }
 }
