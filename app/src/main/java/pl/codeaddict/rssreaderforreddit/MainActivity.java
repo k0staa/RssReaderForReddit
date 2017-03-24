@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -17,16 +18,20 @@ import pl.codeaddict.rssreaderforreddit.models.UrlAdapterItem;
 import pl.codeaddict.rssreaderforreddit.xml.HandleXML;
 
 public class MainActivity extends AppCompatActivity {
-    private Button b1;
-    private String choosenUrl = "http://tutorialspoint.com/android/sampleXML.xml";
+    private static String REDDIT_BASE_URL = "https://www.reddit.com/r/";
+    private static String REDDIT_BASE_URL_XML = "/.xml";
+
+    private Button buttonFetch, buttonAdd;
+    private EditText addChannellText;
+    private String choosenUrl = "";
     private HandleXML handleXML;
     private List<UrlAdapterItem> channelSpinner;
     private Spinner spinner;
 
     public MainActivity() {
         channelSpinner = new ArrayList<>();
-        channelSpinner.add(new UrlAdapterItem("All","https://www.reddit.com/r/all/.xml" ));
-        channelSpinner.add(new UrlAdapterItem("Polska", "https://www.reddit.com/r/polska/.xml" ));
+        channelSpinner.add(new UrlAdapterItem("All", REDDIT_BASE_URL + "all" + REDDIT_BASE_URL_XML ));
+        channelSpinner.add(new UrlAdapterItem("Polska", REDDIT_BASE_URL + "polska" + REDDIT_BASE_URL_XML ));
 
     }
 
@@ -43,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new SpinnerListener(this));
 
-        b1 = (Button) findViewById(R.id.button);
+        buttonFetch = (Button) findViewById(R.id.button);
 
-        b1.setOnClickListener(new View.OnClickListener() {
+        buttonFetch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 handleXML = new HandleXML(choosenUrl);
@@ -55,6 +60,18 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("Posts", "values = <<" + handleXML.getRedditPostList() + ">>");
                 Intent in = new Intent(MainActivity.this, SecondActivity.class);
                 startActivity(in);
+            }
+        });
+
+        buttonAdd = (Button) findViewById(R.id.buttonAdd);
+        addChannellText = (EditText) findViewById(R.id.editTextChannel);
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              if(addChannellText != null && !addChannellText.getText().toString().isEmpty()){
+                  String channel = addChannellText.getText().toString();
+                  channelSpinner.add(new UrlAdapterItem(channel, REDDIT_BASE_URL + channel + REDDIT_BASE_URL_XML ));
+              }
             }
         });
     }

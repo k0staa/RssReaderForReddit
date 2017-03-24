@@ -51,11 +51,9 @@ public class RedditPost {
 
     @Override
     public String toString() {
-        return "RedditPost{" +
-                "author='" + author + '\'' +
-                ", link='" + link + '\'' +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
+        return "<h2>Author: " + author +" </h2>"
+                + "<a href=\"" + link + "\" >" + link + "</a>"
+                + "<p>Title: " + title + "</p><br/>"
+                + "<div> " + content + "</div>";
     }
 }
