@@ -15,7 +15,7 @@ import java.util.List;
 
 import pl.codeaddict.rssreaderforreddit.models.RedditPost;
 
-public class SecondActivity extends AppCompatActivity {
+public class ViewPostsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +24,11 @@ public class SecondActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listView);
         List<RedditPost> redditPosts = RssReaderForRedditApplication.getContext().getHandleXML().getRedditPostList();
 
-        ArrayAdapter<RedditPost> adapter2 = new ArrayAdapter<RedditPost>(SecondActivity.this, R.layout.activity_second, redditPosts) {
+        ArrayAdapter<RedditPost> adapter2 = new ArrayAdapter<RedditPost>(ViewPostsActivity.this, R.layout.activity_second, redditPosts) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View row;
-                LayoutInflater mInflater = (LayoutInflater) SecondActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater mInflater = (LayoutInflater) ViewPostsActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 if (null == convertView) {
                     row = mInflater.inflate(R.layout.activity_second, null);
                 } else {

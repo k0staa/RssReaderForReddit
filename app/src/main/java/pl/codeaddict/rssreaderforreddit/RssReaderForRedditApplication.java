@@ -7,7 +7,8 @@ import android.app.Application;
  */
 
 public class RssReaderForRedditApplication extends Application {
-
+    public static String REDDIT_BASE_URL = "https://www.reddit.com/r/";
+    public static String REDDIT_BASE_URL_XML = "/.xml";
     private static MainActivity mContext;
 
     public static MainActivity getContext() {

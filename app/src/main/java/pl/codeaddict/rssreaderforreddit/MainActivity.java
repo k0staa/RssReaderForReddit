@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -17,12 +16,12 @@ import pl.codeaddict.rssreaderforreddit.listeners.SpinnerListener;
 import pl.codeaddict.rssreaderforreddit.models.UrlAdapterItem;
 import pl.codeaddict.rssreaderforreddit.xml.HandleXML;
 
-public class MainActivity extends AppCompatActivity {
-    private static String REDDIT_BASE_URL = "https://www.reddit.com/r/";
-    private static String REDDIT_BASE_URL_XML = "/.xml";
+import static pl.codeaddict.rssreaderforreddit.RssReaderForRedditApplication.REDDIT_BASE_URL;
+import static pl.codeaddict.rssreaderforreddit.RssReaderForRedditApplication.REDDIT_BASE_URL_XML;
 
-    private Button buttonFetch, buttonAdd;
-    private EditText addChannellText;
+public class MainActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE = 1;
+    private Button buttonFetch, buttonChannelView;
     private String choosenUrl = "";
     private HandleXML handleXML;
     private List<UrlAdapterItem> channelSpinnerList;
@@ -48,12 +47,11 @@ public class MainActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new SpinnerListener(this));
 
-        buttonFetch = (Button) findViewById(R.id.button);
-
+        buttonFetch = (Button) findViewById(R.id.fetchButton);
         buttonFetch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(spinner.getSelectedItem() == null){
+                if (spinner.getSelectedItem() == null) {
                     return;
                 }
                 handleXML = new HandleXML(choosenUrl);
@@ -61,20 +59,17 @@ public class MainActivity extends AppCompatActivity {
 
                 while (handleXML.parsingComplete) ;
                 Log.i("Posts", "values = <<" + handleXML.getRedditPostList() + ">>");
-                Intent in = new Intent(MainActivity.this, SecondActivity.class);
+                Intent in = new Intent(MainActivity.this, ViewPostsActivity.class);
                 startActivity(in);
             }
         });
 
-        buttonAdd = (Button) findViewById(R.id.buttonAdd);
-        addChannellText = (EditText) findViewById(R.id.editTextChannel);
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
+        buttonChannelView = (Button) findViewById(R.id.addChannelViewbutton);
+        buttonChannelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (addChannellText != null && !addChannellText.getText().toString().isEmpty()) {
-                    String channel = addChannellText.getText().toString();
-                    channelSpinnerList.add(new UrlAdapterItem(channel, REDDIT_BASE_URL + channel + REDDIT_BASE_URL_XML));
-                }
+                Intent intent = new Intent(MainActivity.this, AddChannelActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
     }
