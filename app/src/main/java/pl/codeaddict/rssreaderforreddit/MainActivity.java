@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
                 handleXML.fetchXML();
 
                 while (handleXML.parsingComplete) ;
-                Log.i("Posts", "values = <<" + handleXML.getRedditPostList() + ">>");
                 Intent in = new Intent(MainActivity.this, ViewPostsActivity.class);
                 startActivity(in);
             }

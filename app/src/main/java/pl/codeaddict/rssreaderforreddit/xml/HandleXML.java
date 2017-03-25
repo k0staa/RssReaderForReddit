@@ -68,11 +68,9 @@ public class HandleXML {
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
-
                 try {
                     URL url = new URL(urlString);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
                     conn.setReadTimeout(10000);
                     conn.setConnectTimeout(15000);
                     conn.setRequestMethod("GET");
