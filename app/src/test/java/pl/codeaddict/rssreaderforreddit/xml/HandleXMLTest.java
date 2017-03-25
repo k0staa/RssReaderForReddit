@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -12,6 +13,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.*;
@@ -30,21 +33,15 @@ public class HandleXMLTest {
     }
 
     @Test
-    public void parseXMLAndStoreIt_findXML_returnParsed() throws IOException, XmlPullParserException {
+    public void parseXMLAndStoreIt_findXML_returnParsed() throws IOException, ParserConfigurationException, SAXException {
         File file = getFileFromPath(this, "test.xml");
         assertThat(file, notNullValue());
         FileInputStream inputStream = new FileInputStream(file);
 
-        XmlPullParser parser = mock(XmlPullParser.class);
-        Mockito.when(parser.getEventType()).thenReturn(XmlPullParser.END_DOCUMENT);
-
         HandleXML obj = new HandleXML();
-        obj.parseXMLAndStoreIt(parser);
-
-        while (obj.parsingComplete) ;
-        //(obj.getTitle());
-        //obj.getLink());
-        //obj.getDescription());
+        obj.parseXML(inputStream);
+        assertNotNull(obj.getRedditPostList());
+        assertEquals(25, obj.getRedditPostList().size());
     }
 
 }

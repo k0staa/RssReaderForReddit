@@ -1,7 +1,6 @@
 package pl.codeaddict.rssreaderforreddit;
 
 import android.app.Application;
-import android.content.Context;
 
 /**
  * Created by kostek on 2017-03-19.

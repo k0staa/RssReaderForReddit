@@ -25,13 +25,13 @@ public class MainActivity extends AppCompatActivity {
     private EditText addChannellText;
     private String choosenUrl = "";
     private HandleXML handleXML;
-    private List<UrlAdapterItem> channelSpinner;
+    private List<UrlAdapterItem> channelSpinnerList;
     private Spinner spinner;
 
     public MainActivity() {
-        channelSpinner = new ArrayList<>();
-        channelSpinner.add(new UrlAdapterItem("All", REDDIT_BASE_URL + "all" + REDDIT_BASE_URL_XML ));
-        channelSpinner.add(new UrlAdapterItem("Polska", REDDIT_BASE_URL + "polska" + REDDIT_BASE_URL_XML ));
+        channelSpinnerList = new ArrayList<>();
+        channelSpinnerList.add(new UrlAdapterItem("All", REDDIT_BASE_URL + "all" + REDDIT_BASE_URL_XML));
+        channelSpinnerList.add(new UrlAdapterItem("Polska", REDDIT_BASE_URL + "polska" + REDDIT_BASE_URL_XML));
 
     }
 
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         spinner = (Spinner) findViewById(R.id.spinner);
 
         ArrayAdapter<UrlAdapterItem> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, channelSpinner);
+                android.R.layout.simple_spinner_item, channelSpinnerList);
 
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new SpinnerListener(this));
@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         buttonFetch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(spinner.getSelectedItem() == null){
+                    return;
+                }
                 handleXML = new HandleXML(choosenUrl);
                 handleXML.fetchXML();
 
@@ -68,16 +71,16 @@ public class MainActivity extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              if(addChannellText != null && !addChannellText.getText().toString().isEmpty()){
-                  String channel = addChannellText.getText().toString();
-                  channelSpinner.add(new UrlAdapterItem(channel, REDDIT_BASE_URL + channel + REDDIT_BASE_URL_XML ));
-              }
+                if (addChannellText != null && !addChannellText.getText().toString().isEmpty()) {
+                    String channel = addChannellText.getText().toString();
+                    channelSpinnerList.add(new UrlAdapterItem(channel, REDDIT_BASE_URL + channel + REDDIT_BASE_URL_XML));
+                }
             }
         });
     }
 
-    public List<UrlAdapterItem> getChannelSpinner() {
-        return channelSpinner;
+    public List<UrlAdapterItem> getChannelSpinnerList() {
+        return channelSpinnerList;
     }
 
     public String getChoosenUrl() {
