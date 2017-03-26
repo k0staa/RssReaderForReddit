@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.codeaddict.rssreaderforreddit.adapters.MyArrayAdapter;
 import pl.codeaddict.rssreaderforreddit.dao.ChannelsDataSource;
 import pl.codeaddict.rssreaderforreddit.listeners.SpinnerListener;
 import pl.codeaddict.rssreaderforreddit.models.Channel;
@@ -21,7 +22,8 @@ import static pl.codeaddict.rssreaderforreddit.RssReaderForRedditApplication.RED
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
-    private Button buttonFetch, buttonChannelView;
+    private static Channel DEFAULT_CHANNEL;
+    private Button buttonFetch, buttonChannelView, buttonDelete;
     private String choosenUrl = "";
     private HandleXML handleXML;
     private List<Channel> channelSpinnerList;
@@ -30,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     public MainActivity() {
         channelSpinnerList = new ArrayList<>();
-        channelSpinnerList.add(new Channel("All", REDDIT_BASE_URL + "all" + REDDIT_BASE_URL_XML));
-
+        DEFAULT_CHANNEL = new Channel(" ", " ");
     }
 
     @Override
@@ -40,12 +41,15 @@ public class MainActivity extends AppCompatActivity {
         dataSource = new ChannelsDataSource(this);
         dataSource.open();
         channelSpinnerList.addAll(dataSource.getAllChannel());
-
+        if(channelSpinnerList.isEmpty()){
+            DEFAULT_CHANNEL = dataSource.createChannel(DEFAULT_CHANNEL);
+            channelSpinnerList.add(DEFAULT_CHANNEL);
+        }
         setContentView(R.layout.activity_main);
         RssReaderForRedditApplication.setContext(this);
         spinner = (Spinner) findViewById(R.id.spinner);
 
-        ArrayAdapter<Channel> adapter = new ArrayAdapter<>(this,
+        ArrayAdapter<Channel> adapter = new MyArrayAdapter(this,
                 android.R.layout.simple_spinner_item, channelSpinnerList);
 
         spinner.setAdapter(adapter);
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         buttonFetch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (spinner.getSelectedItem() == null) {
+                if (spinner.getSelectedItem() == null || spinner.getSelectedItem().equals(DEFAULT_CHANNEL)) {
                     return;
                 }
                 handleXML = new HandleXML(choosenUrl);
@@ -73,6 +77,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddChannelActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
+
+        buttonDelete = (Button) findViewById(R.id.deleteButton);
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (spinner.getSelectedItem() == null || spinner.getSelectedItem().equals(DEFAULT_CHANNEL)) {
+                    return;
+                }
+                Channel channelToDelete = (Channel) spinner.getSelectedItem();
+                dataSource.deleteChannel(channelToDelete);
+                channelSpinnerList.remove(channelToDelete);
+                spinner.setSelection(0);
             }
         });
     }
