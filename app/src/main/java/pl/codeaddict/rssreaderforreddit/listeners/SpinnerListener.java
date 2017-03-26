@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import pl.codeaddict.rssreaderforreddit.MainActivity;
-import pl.codeaddict.rssreaderforreddit.models.UrlAdapterItem;
+import pl.codeaddict.rssreaderforreddit.models.Channel;
 
 /**
  * Created by kostek on 2017-03-19.
@@ -19,8 +19,8 @@ public class SpinnerListener implements AdapterView.OnItemSelectedListener {
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        UrlAdapterItem urlAdapterItem = (UrlAdapterItem) mainActivity.getSpinner().getSelectedItem();
-        mainActivity.setChoosenUrl(urlAdapterItem.getUrl());
+        Channel urlAdapterItem = (Channel) mainActivity.getSpinner().getSelectedItem();
+        mainActivity.setChoosenUrl(urlAdapterItem.getChannelUrl());
     }
 
     @Override

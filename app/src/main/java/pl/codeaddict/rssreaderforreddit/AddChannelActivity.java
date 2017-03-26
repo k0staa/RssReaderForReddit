@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import java.util.List;
 
-import pl.codeaddict.rssreaderforreddit.models.UrlAdapterItem;
+import pl.codeaddict.rssreaderforreddit.models.Channel;
 
 import static pl.codeaddict.rssreaderforreddit.RssReaderForRedditApplication.REDDIT_BASE_URL;
 import static pl.codeaddict.rssreaderforreddit.RssReaderForRedditApplication.REDDIT_BASE_URL_XML;
@@ -29,8 +29,10 @@ public class AddChannelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (addChannellText != null && !addChannellText.getText().toString().isEmpty()) {
                     String channel = addChannellText.getText().toString();
-                    List<UrlAdapterItem> channelSpinner = RssReaderForRedditApplication.getContext().getChannelSpinnerList();
-                    channelSpinner.add(new UrlAdapterItem(channel, REDDIT_BASE_URL + channel + REDDIT_BASE_URL_XML));
+                    List<Channel> channelSpinner = RssReaderForRedditApplication.getContext().getChannelSpinnerList();
+                    Channel newChannel = new Channel(channel, REDDIT_BASE_URL + channel + REDDIT_BASE_URL_XML);
+                    RssReaderForRedditApplication.getContext().getDatasource().createChannel(newChannel);
+                    channelSpinner.add(newChannel);
                     Intent intent = new Intent();
                     setResult(Activity.RESULT_OK, intent);
                     finish();
