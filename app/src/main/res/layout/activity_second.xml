@@ -2,17 +2,19 @@
 <AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="#FF000000">
+
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@android:id/text1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
         android:gravity="center_vertical"
-        android:paddingLeft="6dip"
         android:minHeight="40dip"
-        />
+        android:paddingLeft="6dip"
+        android:textColor="?android:attr/textColorPrimaryInverse"
+        android:textSize="20sp" />
 
     <ListView
         android:id="@+id/listView"
