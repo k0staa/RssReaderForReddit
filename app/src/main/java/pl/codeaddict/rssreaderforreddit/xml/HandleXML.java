@@ -5,7 +5,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +26,6 @@ import pl.codeaddict.rssreaderforreddit.models.RedditPost;
 public class HandleXML {
     private List<RedditPost> redditPostList;
     private String urlString = null;
-    private XmlPullParserFactory xmlFactoryObject;
     private Thread thread;
     public volatile boolean parsingComplete = true;
 
