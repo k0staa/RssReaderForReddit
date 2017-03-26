@@ -16,6 +16,9 @@ import pl.codeaddict.rssreaderforreddit.listeners.SpinnerListener;
 import pl.codeaddict.rssreaderforreddit.models.Channel;
 import pl.codeaddict.rssreaderforreddit.xml.HandleXML;
 
+import static pl.codeaddict.rssreaderforreddit.RssReaderForRedditApplication.REDDIT_BASE_URL;
+import static pl.codeaddict.rssreaderforreddit.RssReaderForRedditApplication.REDDIT_BASE_URL_XML;
+
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
     private Button buttonFetch, buttonChannelView;
@@ -23,23 +26,20 @@ public class MainActivity extends AppCompatActivity {
     private HandleXML handleXML;
     private List<Channel> channelSpinnerList;
     private Spinner spinner;
-    private ChannelsDataSource datasource;
+    private ChannelsDataSource dataSource;
 
     public MainActivity() {
         channelSpinnerList = new ArrayList<>();
-/*
-        channelSpinnerList.add(new UrlAdapterItem("All", REDDIT_BASE_URL + "all" + REDDIT_BASE_URL_XML));
-        channelSpinnerList.add(new UrlAdapterItem("Polska", REDDIT_BASE_URL + "polska" + REDDIT_BASE_URL_XML));
-*/
+        channelSpinnerList.add(new Channel("All", REDDIT_BASE_URL + "all" + REDDIT_BASE_URL_XML));
 
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        datasource = new ChannelsDataSource(this);
-        datasource.open();
-        channelSpinnerList = datasource.getAllChannel();
+        dataSource = new ChannelsDataSource(this);
+        dataSource.open();
+        channelSpinnerList.addAll(dataSource.getAllChannel());
 
         setContentView(R.layout.activity_main);
         RssReaderForRedditApplication.setContext(this);
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         return handleXML;
     }
 
-    public ChannelsDataSource getDatasource() {
-        return datasource;
+    public ChannelsDataSource getDataSource() {
+        return dataSource;
     }
 }

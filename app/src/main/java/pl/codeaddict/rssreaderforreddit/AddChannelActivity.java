@@ -10,34 +10,35 @@ import android.widget.EditText;
 
 import java.util.List;
 
+import pl.codeaddict.rssreaderforreddit.dao.ChannelsDataSource;
 import pl.codeaddict.rssreaderforreddit.models.Channel;
 
 import static pl.codeaddict.rssreaderforreddit.RssReaderForRedditApplication.REDDIT_BASE_URL;
 import static pl.codeaddict.rssreaderforreddit.RssReaderForRedditApplication.REDDIT_BASE_URL_XML;
 
 public class AddChannelActivity extends AppCompatActivity {
+    private ChannelsDataSource dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_channel);
-        final EditText addChannellText = (EditText) findViewById(R.id.addChannellEditText);
-
-        Button buttonAddChannell = (Button) findViewById(R.id.buttonAddChannel);
-        buttonAddChannell.setOnClickListener(new View.OnClickListener() {
+        final EditText addChannelText = (EditText) findViewById(R.id.addChannellEditText);
+        dataSource = RssReaderForRedditApplication.getContext().getDataSource();
+        Button buttonAddChannel = (Button) findViewById(R.id.buttonAddChannel);
+        buttonAddChannel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (addChannellText != null && !addChannellText.getText().toString().isEmpty()) {
-                    String channel = addChannellText.getText().toString();
+                if (addChannelText != null && !addChannelText.getText().toString().isEmpty()) {
+                    String channel = addChannelText.getText().toString();
                     List<Channel> channelSpinner = RssReaderForRedditApplication.getContext().getChannelSpinnerList();
                     Channel newChannel = new Channel(channel, REDDIT_BASE_URL + channel + REDDIT_BASE_URL_XML);
-                    RssReaderForRedditApplication.getContext().getDatasource().createChannel(newChannel);
+                    newChannel = dataSource.createChannel(newChannel);
                     channelSpinner.add(newChannel);
                     Intent intent = new Intent();
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }
-
             }
         });
     }
