@@ -22,7 +22,7 @@ public class ViewPostsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         ListView listView = (ListView) findViewById(R.id.listView);
-        List<RedditPost> redditPosts = RssReaderForRedditApplication.getContext().getHandleXML().getRedditPostList();
+        List<RedditPost> redditPosts = RssReaderForRedditApplication.getContext().getRedditPosts();
 
         ArrayAdapter<RedditPost> adapter2 = new ArrayAdapter<RedditPost>(ViewPostsActivity.this, R.layout.activity_second, redditPosts) {
             @Override
