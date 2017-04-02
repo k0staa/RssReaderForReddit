@@ -31,7 +31,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="117dp"
-        android:text="Enter your favorite channell"
+        android:text="Enter your favorite channel"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         android:textColor="?android:attr/textColorPrimaryInverse"
         app:layout_constraintLeft_toLeftOf="parent"

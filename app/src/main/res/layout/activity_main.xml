@@ -54,7 +54,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="94dp"
-        android:text="Select a channell or add one"
+        android:text="Select a channel or add one"
         android:textColor="?android:attr/textColorPrimaryInverse"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/spinner"
