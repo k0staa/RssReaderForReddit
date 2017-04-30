@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                new ParseXMLTask().execute(choosenUrl);
-                buttonFetch.setBackground(R.drawable.waiting_animation_list);
+                buttonFetch.setBackgroundResource(R.drawable.waiting_animation_list);
 
             }
         });
