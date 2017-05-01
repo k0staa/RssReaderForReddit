@@ -1,6 +1,6 @@
 # RSSReaderForReddit
 
-This is simple Android app which allows to fetch RSS from Reddit channels (which you can add and remove). 
+This is simple Android app which allows to fetch RSS from Reddit channels (which you can add and remove). You can install it from Google Play: https://play.google.com/apps/testing/pl.codeaddict.rssreaderforreddit
 
 
 ## Functionalities availible now:
