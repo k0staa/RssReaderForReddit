@@ -4,43 +4,43 @@
 
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon1.png"/>
+        android:drawable="@drawable/loading_icon1"/>
 
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon2.png"/>
+        android:drawable="@drawable/loading_icon2"/>
 
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon3.png"/>
+        android:drawable="@drawable/loading_icon3"/>
 
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon4.png"/>
+        android:drawable="@drawable/loading_icon4"/>
 
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon5.png0"/>
+        android:drawable="@drawable/loading_icon5"/>
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon6.png0"/>
+        android:drawable="@drawable/loading_icon6"/>
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon7.png0"/>
+        android:drawable="@drawable/loading_icon7"/>
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon8.png0"/>
+        android:drawable="@drawable/loading_icon8"/>
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon9.png0"/>
+        android:drawable="@drawable/loading_icon9"/>
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon10.png0"/>
+        android:drawable="@drawable/loading_icon10"/>
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon11.png0"/>
+        android:drawable="@drawable/loading_icon11"/>
     <item
         android:duration="500"
-        android:drawable="@drawable/loading_icon12.png0"/>
+        android:drawable="@drawable/loading_icon12"/>
 
 </animation-list>
