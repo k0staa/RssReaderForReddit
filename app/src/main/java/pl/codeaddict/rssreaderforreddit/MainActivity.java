@@ -3,6 +3,7 @@ package pl.codeaddict.rssreaderforreddit;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import org.w3c.dom.Document;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static Channel DEFAULT_CHANNEL;
     private static int MAX_CHANNELS = 50;
     private Button buttonFetch, buttonAddChannelView, buttonDelete;
+    private ImageView waitingImage;
     private String choosenUrl = "";
     private List<Channel> channelSpinnerList;
     private Spinner spinner;
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         dataSource = new ChannelsDataSource(this);
         dataSource.open();
         channelSpinnerList.addAll(dataSource.getAllChannel());
-        if(channelSpinnerList.isEmpty()){
+        if (channelSpinnerList.isEmpty()) {
             DEFAULT_CHANNEL = dataSource.createChannel(DEFAULT_CHANNEL);
             channelSpinnerList.add(DEFAULT_CHANNEL);
         }
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new SpinnerListener(this));
+        waitingImage = (ImageView) findViewById(R.id.waitingImage);
 
         buttonFetch = (Button) findViewById(R.id.fetchButton);
         buttonFetch.setOnClickListener(new View.OnClickListener() {
@@ -78,9 +82,8 @@ public class MainActivity extends AppCompatActivity {
                 if (spinner.getSelectedItem() == null || spinner.getSelectedItem().equals(DEFAULT_CHANNEL)) {
                     return;
                 }
-               new ParseXMLTask().execute(choosenUrl);
-                buttonFetch.setBackgroundResource(R.drawable.waiting_animation_list);
-
+                showWaitingAnimation();
+                new ParseXMLTask().execute(choosenUrl);
             }
         });
 
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         buttonAddChannelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(channelSpinnerList.size() >= MAX_CHANNELS){
+                if (channelSpinnerList.size() >= MAX_CHANNELS) {
                     showExceptionAlert("There is a problem", "You exceed maximum amount of channels");
 
                 }
@@ -123,6 +126,33 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         alertDialog.show();
+    }
+
+    private void showWaitingAnimation() {
+        changeButtonsVisibility();
+        AnimationDrawable dr = (AnimationDrawable) getResources().getDrawable(R.drawable.waiting_animation_list);
+        waitingImage.setVisibility(View.VISIBLE);
+        waitingImage.setImageDrawable(dr);
+
+        ((AnimationDrawable) waitingImage.getDrawable()).start();
+    }
+
+    private void changeButtonsVisibility() {
+        if (buttonFetch.getVisibility() == View.VISIBLE) {
+            buttonFetch.setVisibility(View.INVISIBLE);
+            buttonDelete.setVisibility(View.INVISIBLE);
+            buttonAddChannelView.setVisibility(View.INVISIBLE);
+        } else {
+            buttonFetch.setVisibility(View.VISIBLE);
+            buttonDelete.setVisibility(View.VISIBLE);
+            buttonAddChannelView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideWaitingAnimation() {
+        changeButtonsVisibility();
+        waitingImage.setVisibility(View.INVISIBLE);
+        ((AnimationDrawable) waitingImage.getDrawable()).stop();
     }
 
     public List<Channel> getChannelSpinnerList() {
@@ -184,11 +214,12 @@ public class MainActivity extends AppCompatActivity {
             } else if (isCancelled()) {
                 // cancel handling here
             } else {
+                // result handling here
                 redditPosts = result.getResult();
                 Intent in = new Intent(MainActivity.this, ViewPostsActivity.class);
                 startActivity(in);
-                // result handling here
             }
+            hideWaitingAnimation();
         }
 
         private List<RedditPost> parseXML(InputStream inputStream) throws IOException, SAXException, ParserConfigurationException {
